@@ -30,9 +30,29 @@ const getCountries = ()=>{
 }
 
 
+var countryCode;
 const getStates=(cname)=>{
-   
+   countryCode=cname
     fetch(`https://api.countrystatecity.in/v1/countries/${cname}/states`, requestOptions)
+    .then(data=>{
+        return data.json()
+    }).then(result=>{
+        
+        var rows="";
+        for(var i=0;i<result.length;i++)
+        {
+            rows = rows+"<option value="+result[i].iso2+">"+result[i].name+"</option>"
+        }
+        state.innerHTML=rows
+    }).catch(err=>{
+        console.log(err);
+    })
+}
+
+const getCities=(sname)=>{
+   
+   
+    fetch(`https://api.countrystatecity.in/v1/countries/${countryCode}/states/${sname}/cities`, requestOptions)
     .then(data=>{
         return data.json()
     }).then(result=>{
@@ -42,7 +62,7 @@ const getStates=(cname)=>{
         {
             rows = rows+"<option>"+result[i].name+"</option>"
         }
-        state.innerHTML=rows
+        city.innerHTML=rows
     }).catch(err=>{
         console.log(err);
     })

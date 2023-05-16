@@ -10,7 +10,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
-<body>
+<body onload="getCountries()">
     {{>header}}
    <section class="vh-100">
   <div class="container py-5 h-100">
@@ -20,7 +20,7 @@
 
         <h3 class="mb-4 pb-2 fw-normal">Check the weather forecast</h3>
 
-        <div class="input-group rounded mb-3">
+        {{!-- <div class="input-group rounded mb-3">
           <input type="search" class="form-control rounded" placeholder="City" aria-label="Search"
             aria-describedby="search-addon" id="search"/>
           <a href="#!" type="button" onclick="getData()">
@@ -28,9 +28,20 @@
               Check!
             </span>
           </a>
-        </div>
+        </div> --}}
 
-      
+          <select name="country" id="country" onchange="getStates(value)" class="form-control">
+            <option value="0">---Select Country---</option>
+
+        </select><br>
+
+        <select name="state" id="state" onchange="getCities(value)" class="form-control">
+            <option value="0">---Select state---</option>
+        </select> <br>
+
+        <select name="city" id="city" class="form-control" onchange="getData(value)">
+            <option value="0">---Select city---</option>
+        </select>
 
         <div class="card shadow-0 border">
           <div class="card-body p-4">

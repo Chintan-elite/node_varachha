@@ -100,4 +100,4 @@ const updateManyProduct=()=>{
 //viewProducts()
 //updateProduct()
 //deleteProduct()
-updateManyProduct()
+//updateManyProduct()

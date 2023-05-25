@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 
-dburl = "mongodb://127.0.0.1:27017/shop";
+dburl = "mongodb+srv://tops:tops@cluster0.g2xyqwx.mongodb.net/erp?retryWrites=true&w=majority";
 
 mongoose.connect(dburl).then(()=>{
     console.log("db connected");

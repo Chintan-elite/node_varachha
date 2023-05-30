@@ -1,6 +1,7 @@
 const router = require("express").Router()
 const User = require("../model/users")
-
+const bcrypt = require("bcryptjs")
+const jwt = require("jsonwebtoken")
 router.post("/",async(req,resp)=>{
     try {
         console.log(req.body);
@@ -52,6 +53,27 @@ router.delete("/:id",async(req,resp)=>{
     }
 })
 
+router.post("/login",async(req,resp)=>{
+    try {
+        const user = await User.findOne({email:req.body.email})
+       
+        const isMatch = await bcrypt.compare(req.body.pass,user.pass)
+
+        if(isMatch)
+        {
+            const token = await jwt.sign({_id:user._id},process.env.S_KEY)
+            resp.send("auth-token : "+token)
+        }
+        else
+        {
+            resp.send("invalid credentials")
+        }
+    } catch (error) {
+        console.log(error);
+        resp.send("invalid credentials")
+        
+    }
+})
 
 
 module.exports=router

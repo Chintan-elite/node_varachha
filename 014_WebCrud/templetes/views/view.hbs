@@ -46,15 +46,16 @@ background: linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244
             <tr>
               <th>Username</th>
               <th>Email</th>
-              
+              <th><a href="logout" class="btn btn-primary">Logout</a></th>
+               <th><a href="logoutall" class="btn btn-primary">Logout All</a></th>
             </tr>
 
             {{#each userdata}}
               <tr>
                 <td>{{this.uname}}</td>
                 <td>{{this.email}}</td>
-                <td><a href="" class="btn btn-danger">Delete</a></td>
-                 <td><a href="" class="btn btn-primary">Edit</a></td>
+                <td><a href="deleteuser?uid={{this._id}}" class="btn btn-danger">Delete</a></td>
+                 <td><a href="edituser?uid={{this._id}}" class="btn btn-primary">Edit</a></td>
               </tr>
             {{/each}}
           </table>

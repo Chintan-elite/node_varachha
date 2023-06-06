@@ -42,19 +42,23 @@ background: linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244
         <div class="col-12 col-md-9 col-lg-7 col-xl-6">
           <div class="card" style="border-radius: 15px;">
             <div class="card-body p-5">
-              <h2 class="text-uppercase text-center mb-5">Login</h2>
+              <h2 class="text-uppercase text-center mb-5">Update User</h2>
 
-              <form action="do_login" method="post">
-
-              
-                <span class="text-danger">{{err}}</span>
+              <form action="do_update" method="post">
+                <span class="text-success">{{msg}}</span>
+                <input type="hidden" name="id" value="{{data.id}}">
                 <div class="form-outline mb-4">
-                  <input type="email" id="form3Example3cg" class="form-control form-control-lg" name="email" />
+                  <input type="text" id="form3Example1cg" class="form-control form-control-lg" name="uname" value="{{data.uname}}"/>
+                  <label class="form-label" for="form3Example1cg">Your Name</label>
+                </div>
+
+                <div class="form-outline mb-4">
+                  <input type="email" id="form3Example3cg" class="form-control form-control-lg" name="email" value="{{data.email}}"/>
                   <label class="form-label" for="form3Example3cg">Your Email</label>
                 </div>
 
                 <div class="form-outline mb-4">
-                  <input type="password" id="form3Example4cg" class="form-control form-control-lg" name="pass"/>
+                  <input type="password" id="form3Example4cg" class="form-control form-control-lg" name="pass" />
                   <label class="form-label" for="form3Example4cg">Password</label>
                 </div>
 
@@ -63,13 +67,10 @@ background: linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244
              
                 <div class="d-flex justify-content-center">
                   <button type="submit"
-                    class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Login</button>
+                    class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Update</button>
                 </div>
 
-                <p class="text-center text-muted mt-5 mb-0">New User? <a href="reg"
-                    class="fw-bold text-body"><u>Register here</u></a></p>
-<p class="text-center text-muted mt-5 mb-0"><a href="viewuser"
-                    class="fw-bold text-body"><u>View all user</u></a></p>
+                
 
               </form>
 

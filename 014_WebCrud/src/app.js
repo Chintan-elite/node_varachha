@@ -3,10 +3,12 @@ const app = express()
 const mongoose = require("mongoose")
 const hbs = require("hbs")
 const path = require("path")
+var cookieParser = require('cookie-parser')
 require("dotenv").config()
 const PORT = process.env.PORT
 const DB_URL = process.env.DB_URL
 var bodyParser = require('body-parser')
+app.use(cookieParser())
 mongoose.connect(DB_URL).then(()=>{
     console.log("db connected");
 }).catch(err=>{

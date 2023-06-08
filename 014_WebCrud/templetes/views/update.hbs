@@ -44,7 +44,7 @@ background: linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244
             <div class="card-body p-5">
               <h2 class="text-uppercase text-center mb-5">Update User</h2>
 
-              <form action="do_update" method="post">
+              <form action="do_update" method="post" enctype="multipart/form-data">
                 <span class="text-success">{{msg}}</span>
                 <input type="hidden" name="id" value="{{data.id}}">
                 <div class="form-outline mb-4">
@@ -62,7 +62,10 @@ background: linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244
                   <label class="form-label" for="form3Example4cg">Password</label>
                 </div>
 
-             
+             <div class="form-outline mb-4">
+                  <input type="file" id="form3Example4cg" class="form-control form-control-lg" name="file" />
+                  <label class="form-label" for="form3Example4cg">Profile Image</label>
+                </div>
 
              
                 <div class="d-flex justify-content-center">

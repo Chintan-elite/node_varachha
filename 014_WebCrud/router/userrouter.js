@@ -2,6 +2,23 @@ const router = require("express").Router()
 const User = require("../model/users")
 const bcrypt = require("bcryptjs")
 const auth = require("../middleware/auth")
+const multer = require("multer")
+const fs = require("fs")
+const storageEngine = multer.diskStorage({
+  destination: "./public/img",
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}--${file.originalname}`);
+  },
+});
+
+const upload = multer({
+  storage: storageEngine,
+});
+
+
+
+
+
 router.get("/",(req,resp)=>{
     resp.render("login")
 })
@@ -10,10 +27,11 @@ router.get("/reg",(req,resp)=>{
     resp.render("reg")
 })
 
-router.post("/do_register",async(req,resp)=>{
+router.post("/do_register",upload.single("file"),async(req,resp)=>{
   try {
-    const user = new User({uname : req.body.uname,email:req.body.email,pass : req.body.pass})
-    await user.save()
+    const user = new User({uname : req.body.uname,email:req.body.email,pass : req.body.pass,img : req.file.filename})
+    const udata =  await user.save()
+    console.log(udata);
     resp.render("reg",{msg : "Registration successfully done !!!"})
   } catch (error) {
     console.log(error);
@@ -32,7 +50,8 @@ router.get("/viewuser",auth,async(req,resp)=>{
 router.get("/deleteuser",async(req,resp)=>{
   try {
     const id = req.query.uid
-    await User.findByIdAndDelete(id)
+    const udata =  await User.findByIdAndDelete(id)
+    fs.unlinkSync("public/img/"+udata.img)
     resp.redirect("viewuser")
   } catch (error) {
     console.log(error); 
@@ -49,10 +68,11 @@ router.get("/edituser",async(req,resp)=>{
   }
 })
 
-router.post("/do_update",async(req,resp)=>{
+router.post("/do_update",upload.single("file"),async(req,resp)=>{
   try {
     const id = req.body.id
-    await User.findByIdAndUpdate(id,req.body)
+     const udata = await User.findByIdAndUpdate(id,{uname : req.body.uname,email:req.body.email,pass : req.body.pass,img : req.file.filename})
+    fs.unlinkSync("public/img/"+udata.img)
     resp.redirect("viewuser")
   } catch (error) {
     console.log(error); 

@@ -51,17 +51,17 @@
             <div class="col-lg-7 mb-5 m-auto">
                 <div class="contact-form">
                     <div id="success" class="text-danger">{{err}}</div>
-                    <form name="sentMessage" id="contactForm" novalidate="novalidate">
+                    <form action="do_login" method="post">
                        
                         <div class="control-group">
                             <input type="email" class="form-control" id="email" placeholder="Your Email"
-                                required="required" data-validation-required-message="Please enter your email" />
+                                required="required" data-validation-required-message="Please enter your email" name="email"/>
                             <p class="help-block text-danger"></p>
                         </div>
 
                          <div class="control-group">
                             <input type="password" class="form-control" id="pass" placeholder="Your Password"
-                                required="required" data-validation-required-message="Please enter your Password" />
+                                required="required" data-validation-required-message="Please enter your Password" name="pass" />
                             <p class="help-block text-danger"></p>
                         </div>
                         

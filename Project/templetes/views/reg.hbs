@@ -50,28 +50,28 @@
         <div class="row px-xl-5">
             <div class="col-lg-7 mb-5 m-auto">
                 <div class="contact-form">
-                    <div id="success"></div>
-                    <form name="sentMessage" id="contactForm" novalidate="novalidate">
+                    <span class="text-success">{{msg}}</span>
+                    <form  action="do_register" method="post">
                         <div class="control-group">
                             <input type="text" class="form-control" id="name" placeholder="Your Name"
-                                required="required" data-validation-required-message="Please enter your name" />
+                                required="required" data-validation-required-message="Please enter your name"  name="uname"/>
                             <p class="help-block text-danger"></p>
                         </div>
                         <div class="control-group">
-                            <input type="email" class="form-control" id="email" placeholder="Your Email"
-                                required="required" data-validation-required-message="Please enter your email" />
+                            <input type="text" class="form-control" placeholder="Your Email"
+                                required="required" data-validation-required-message="Please enter your email" name="email"/>
                             <p class="help-block text-danger"></p>
                         </div>
 
                          <div class="control-group">
                             <input type="password" class="form-control" id="pass" placeholder="Your Password"
-                                required="required" data-validation-required-message="Please enter your Password" />
+                                required="required" data-validation-required-message="Please enter your Password" name="pass"/>
                             <p class="help-block text-danger"></p>
                         </div>
                         
                          <div class="control-group">
                             <input type="text" class="form-control" id="phone" placeholder="Your Phone"
-                                required="required" data-validation-required-message="Please enter your Phone no" />
+                                required="required" data-validation-required-message="Please enter your Phone no" name="phone"/>
                             <p class="help-block text-danger"></p>
                         </div>
                       

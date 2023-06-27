@@ -87,22 +87,79 @@ router.get("/add_cart",auth,async(req,resp)=>{
      const pid = req.query.pid
      try {
         
+        const data = await Cart.findOne({$and : [{pid:pid},{uid:uid}]})
+        if(data){
+            var qty = data.qty;
+            qty++;
+            var price = data.price * qty
+            await Cart.findByIdAndUpdate(data._id,{qty:qty,total:price});
+            resp.send("Product added into cart !!!")
+        }
+        else
+        {
         const pdata = await Product.findOne({_id:pid})
         const cart = new Cart({uid:uid, pid:pid,price:pdata.price,qty:1,total:pdata.price})
         await cart.save()
         resp.send("Product added into cart !!!")
+        }
      } catch (error) {
         console.log(error);
      }
 
 })
 
-router.get("/cart",auth,(req,resp)=>{
-    resp.render("cart")
+router.get("/cart",auth,async (req,resp)=>{
+
+    const user = req.user
+    try {
+        
+        const cartdata =await Cart.aggregate([{$match:{uid:user._id}},{$lookup:{from:'products',localField:'pid',foreignField:'_id',as:'product'}}]) 
+    
+        var sum=0;
+        for(var i=0;i<cartdata.length;i++)
+        {
+            sum = sum + cartdata[i].total
+        }
+
+
+        resp.render("cart",{cartdata:cartdata,total:sum})
+    }
+    catch (error) {
+        console.log(error);
+    }
 })
 
+router.get("/removefromcart",auth,async(req,resp)=>{
+    try{
+        const cid = req.query.pid
+        await Cart.findByIdAndDelete(cid)
+        resp.send()
 
+    }catch(err){
+        console.log(err);
+    }
+})
 
+router.get("/changeqty",auth,async(req,resp)=>{
+    try {
+            const cid = req.query.cid
+            const value = req.query.value
 
+            const cartdata = await Cart.findOne({_id:cid})
+            var qty = cartdata.qty+Number(value)
+            if(qty!=0)
+            { 
+            var price = cartdata.price*qty
+            await Cart.findByIdAndUpdate(cid,{qty : qty,total:price})
+            resp.send()
+            }
+            else
+            {
+                resp.send()
+            }
+    } catch (error) {
+        console.log(error);
+    }
+})
 
 module.exports=router

@@ -10,7 +10,8 @@ var bodyParser = require('body-parser')
 var cookieParser = require('cookie-parser')
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
-
+var cors = require('cors')
+app.use(cors())
 
 mongoose.connect(dburl).then(()=>{
     console.log("db connected");

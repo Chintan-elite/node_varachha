@@ -130,9 +130,9 @@
                     <div class="card-footer border-secondary bg-transparent">
                         <div class="d-flex justify-content-between mt-2">
                             <h5 class="font-weight-bold">Total</h5>
-                            <h5 class="font-weight-bold">Rs. {{total}}</h5>
+                            <h5 class="font-weight-bold" id="amt">{{total}}</h5>
                         </div>
-                        <button class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button>
+                        <button class="btn btn-block btn-primary my-3 py-3" id="rzp-button1" >Proceed To Checkout</button>
                     </div>
                 </div>
             </div>
@@ -228,6 +228,59 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+
+
+document.getElementById('rzp-button1').onclick = function(e){
+    e.preventDefault();
+    const amt = document.getElementById("amt").textContent
+    fetch("http://127.0.0.1:9000/payment?amt="+amt).then(data=>{
+        return data.json()
+    }).then(result=>{
+
+        var options = {
+    "key": "rzp_test_9lwGSV1BK5YOo9", // Enter the Key ID generated from the Dashboard
+    "amount": result.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "currency": "INR",
+    "name": "Acme Corp",
+    "description": "Test Transaction",
+    "image": "https://example.com/your_logo",
+    "order_id": result.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "handler": function (response){
+        
+        $.get("confirmOrder",{pid:response.razorpay_payment_id},function(rt){
+            alert(rt)
+        })
+
+    },
+    "prefill": {
+        "name": "Gaurav Kumar",
+        "email": "gaurav.kumar@example.com",
+        "contact": "9000090000"
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+};
+var rzp1 = new Razorpay(options);
+
+    rzp1.open();
+   
+
+
+    }).catch(err=>{
+        console.log(err);
+    })
+
+
+
+  
+}
+</script>
 </body>
 
 </html>

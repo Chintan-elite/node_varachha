@@ -5,6 +5,8 @@ const Product = require("../model/products")
 const User  = require("../model/users")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
+const Razorpay = require("razorpay")
+const Order = require("../model/orders")
 router.get("/",async (req,resp)=>{
     try {
         const catdata = await Category.find()
@@ -161,5 +163,98 @@ router.get("/changeqty",auth,async(req,resp)=>{
         console.log(error);
     }
 })
+
+//********************payment******************** */
+var nodemailer = require('nodemailer');
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'chintan.tops@gmail.com',
+      pass: 'adnyjucmpwuevtsu'
+    }
+  });
+router.get("/payment",(req,resp)=>{
+
+    const amt = req.query.amt;
+    var instance = new Razorpay({
+        key_id: 'rzp_test_9lwGSV1BK5YOo9',
+        key_secret: 'ja0XQ9TbbgMG8ELbIshYLlmN',
+      });
+
+      var options = {
+        amount:Number(amt)*100 ,  // amount in the smallest currency unit
+        currency: "INR",
+        receipt: "order_rcptid_11"
+      };
+
+      instance.orders.create(options, function(err, order) {
+       resp.send(order)
+      });
+
+
+
+})
+
+router.get("/confirmOrder",auth,async(req,resp)=>{
+    try {
+        const payid = req.query.pid
+        const uid = req.user._id
+
+        const cartProduct = await Cart.find({uid:uid})
+        var productlist = [];
+        var alltotal = 0;
+        var row = "";
+        for(var i=0;i<cartProduct.length;i++)
+        {
+
+            const prod = await Product.findOne({_id:cartProduct[i].pid})
+
+            var pname = prod.pname
+            var price = prod.price
+            var qty = cartProduct[i].qty
+            var total = Number(price)*Number(qty)
+
+            productlist[i]={
+                pname:pname,
+                price: price,
+                qty:qty,
+                total:total
+            }
+            alltotal = alltotal+total;
+            row = row+"<tr><td>"+pname+"</td><td>"+price+"</td><td>"+qty+"</td><td>"+total+"</td></tr>"
+        }
+
+
+        const order = new Order({payid:payid,uid:uid,product:productlist,total:alltotal})
+        await order.save()
+
+        var mailOptions = {
+            from: 'chintan.tops@gmail.com',
+            to: req.user.email,
+            subject: 'Order Conformation',
+            html: "<table border='1'><tr><th>ProductName</th><th>Price</th><th>qty</th><th>Total</th></tr>"+row+"<tr><td>All total</td><td>"+alltotal+"</td></tr></table>"
+          };
+          
+          transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+              console.log(error);
+            } else {
+                resp.send("Order confirmed !!!")
+            }
+          });
+
+
+
+
+
+        
+
+
+
+    } catch (error) {
+        console.log(error);
+    }
+})
+
 
 module.exports=router
